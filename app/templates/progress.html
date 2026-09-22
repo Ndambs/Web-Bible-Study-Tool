@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}My Progress{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="breadcrumb"><a href="{{ url_for('main.home') }}">Home</a> &rsaquo; My Progress</p>
+  <h1>My Progress</h1>
+  <p class="page-lede">Saved to this browser &mdash; no account needed.</p>
+</section>
+
+<section class="progress-summary">
+  <div class="progress-card">
+    <h2>Old Testament</h2>
+    <div class="progress-track"><div class="progress-fill" style="width: {{ stats.OT.percent }}%"></div></div>
+    <p>{{ stats.OT.completed }} of {{ stats.OT.total }} days read ({{ stats.OT.percent }}%)</p>
+  </div>
+  <div class="progress-card">
+    <h2>New Testament</h2>
+    <div class="progress-track"><div class="progress-fill" style="width: {{ stats.NT.percent }}%"></div></div>
+    <p>{{ stats.NT.completed }} of {{ stats.NT.total }} days read ({{ stats.NT.percent }}%)</p>
+  </div>
+</section>
+
+<section class="up-next">
+  <h2>Up Next</h2>
+  <div class="up-next-cols">
+    <div>
+      <h3>Old Testament</h3>
+      <ul class="day-list">
+        {% for d in ot_remaining %}
+        <li><a href="{{ url_for('devotional.day_view', testament='ot', day_number=d.day_number) }}">
+          <span class="day-list-num">Day {{ d.day_number }}</span>
+          <span class="day-list-title">{{ d.title }}</span>
+        </a></li>
+        {% else %}
+        <li class="empty">You're all caught up.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div>
+      <h3>New Testament</h3>
+      <ul class="day-list">
+        {% for d in nt_remaining %}
+        <li><a href="{{ url_for('devotional.day_view', testament='nt', day_number=d.day_number) }}">
+          <span class="day-list-num">Day {{ d.day_number }}</span>
+          <span class="day-list-title">{{ d.title }}</span>
+        </a></li>
+        {% else %}
+        <li class="empty">You're all caught up.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

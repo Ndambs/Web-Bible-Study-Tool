@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ book.name }} — Introduction &amp; Readings{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="breadcrumb">
+    <a href="{{ url_for('main.home') }}">Home</a> &rsaquo;
+    <a href="{{ url_for('devotional.book_list') }}">{{ 'Old' if testament == 'OT' else 'New' }} Testament</a> &rsaquo;
+    {{ book.name }}
+  </p>
+  <h1>{{ book.name }}</h1>
+  <p class="page-lede">{{ book.subtitle }}</p>
+</section>
+
+<section class="book-intro">
+  <p>{{ book.author }}</p>
+  <p>{{ book.audience }}</p>
+  <p>{{ book.historical_setting }}</p>
+  <p>{{ book.purpose }}</p>
+</section>
+
+<section class="day-list-section">
+  <h2>Daily Readings</h2>
+  <ul class="day-list">
+    {% for d in days %}
+    <li class="{{ 'is-done' if d.day_number in completed }}">
+      <a href="{{ url_for('devotional.day_view', day_number=d.day_number) }}">
+        <span class="day-list-num">Day {{ d.day_number }}</span>
+        <span class="day-list-ref">{{ d.ref }}</span>
+        <span class="day-list-title">{{ d.title }}</span>
+        {% if d.day_number in completed %}<span class="check" aria-label="Read">&#10003;</span>{% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

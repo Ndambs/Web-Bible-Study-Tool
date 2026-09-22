@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}The Whole Bible in Daily Sermonettes{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-kicker">A complete, stand-alone devotional guide</p>
+    <h1>Read the whole Bible,<br>one sermonette at a time.</h1>
+    <p class="hero-lede">
+      Every day is a self-contained study &mdash; the historical setting, the passage opened up
+      chapter by chapter, the central truth named plainly, a voice from church history, honest
+      application, and a closing prayer. Nothing more to look up.
+    </p>
+  </div>
+</section>
+
+<section class="tracks">
+  <a class="track-card track-ot" href="{{ url_for('devotional.book_list', testament='ot') }}">
+    <div class="track-head">
+      <h2>Old Testament</h2>
+      <p class="track-span">Genesis &rarr; Malachi &middot; {{ ot_days_total }} days</p>
+    </div>
+    <div class="track-progress">
+      <div class="progress-track">
+        <div class="progress-fill" style="width: {{ stats.OT.percent }}%"></div>
+      </div>
+      <p class="progress-label">{{ stats.OT.completed }} of {{ stats.OT.total }} days read</p>
+    </div>
+    <p class="track-cta">
+      {% if ot_next %}Continue at Day {{ ot_next }} &rarr;{% else %}Start Day 1 &rarr;{% endif %}
+    </p>
+  </a>
+
+  <a class="track-card track-nt" href="{{ url_for('devotional.book_list', testament='nt') }}">
+    <div class="track-head">
+      <h2>New Testament</h2>
+      <p class="track-span">Matthew &rarr; Revelation &middot; {{ nt_days_total }} days</p>
+    </div>
+    <div class="track-progress">
+      <div class="progress-track">
+        <div class="progress-fill" style="width: {{ stats.NT.percent }}%"></div>
+      </div>
+      <p class="progress-label">{{ stats.NT.completed }} of {{ stats.NT.total }} days read</p>
+    </div>
+    <p class="track-cta">
+      {% if nt_next %}Continue at Day {{ nt_next }} &rarr;{% else %}Start Day 1 &rarr;{% endif %}
+    </p>
+  </a>
+</section>
+
+<section class="how-it-works">
+  <h2>What's in every day's sermonette</h2>
+  <ol class="sermonette-outline">
+    <li><span>Opening Word</span> &mdash; a line to focus your attention before you read.</li>
+    <li><span>Setting the Scene</span> &mdash; the historical and cultural background, right on the page.</li>
+    <li><span>The Passage, Opened Up</span> &mdash; what happens or is argued, chapter by chapter.</li>
+    <li><span>The Central Truth</span> &mdash; the theological takeaway, named plainly.</li>
+    <li><span>A Voice from Church History</span> &mdash; insight from a sound, trusted expositor.</li>
+    <li><span>Living It Out</span> &mdash; a question aimed at honest, real application.</li>
+    <li><span>A Prayer for Today</span> &mdash; to carry the truth from your head to your heart.</li>
+  </ol>
+</section>
+{% endblock %}

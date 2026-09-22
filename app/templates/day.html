@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}{{ testament }} Day {{ day.day_number }} — {{ day.title }}{% endblock %}
+
+{% block content %}
+<article class="sermonette" data-testament="{{ testament }}" data-day="{{ day.day_number }}">
+
+  <p class="breadcrumb">
+    <a href="{{ url_for('main.home') }}">Home</a> &rsaquo;
+    <a href="{{ url_for('devotional.book_list') }}">{{ 'Old' if testament == 'OT' else 'New' }} Testament</a> &rsaquo;
+    <a href="{{ url_for('devotional.book_detail', book_slug=day.book_slug) }}">{{ day.book }}</a>
+  </p>
+
+  <header class="sermonette-head">
+    <p class="sermonette-daytag">{{ 'Old Testament' if testament == 'OT' else 'New Testament' }} &middot; Day {{ day.day_number }} of {{ total }}</p>
+    <h1>{{ day.title }}</h1>
+    <p class="sermonette-ref">{{ day.ref }}</p>
+  </header>
+
+  <p class="sermonette-opening">{{ day.opening_line }}</p>
+
+  {% if day.setting_scene %}
+  <section class="sermon-block">
+    <h2>Setting the Scene</h2>
+    <p class="scene-text">{{ day.setting_scene }}</p>
+  </section>
+  {% endif %}
+
+  <section class="sermon-block">
+    <h2>The Passage, Opened Up</h2>
+    <dl class="chapter-notes">
+      {% for c in day.chapters %}
+      <div class="chapter-row">
+        <dt>{{ c.label }}</dt>
+        <dd>{{ c.note }}</dd>
+      </div>
+      {% endfor %}
+    </dl>
+  </section>
+
+  <section class="sermon-block truth-block">
+    <h2>The Central Truth</h2>
+    <ul class="truth-list">
+      {% for t in day.themes %}
+      <li>{{ t }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="sermon-block voice-block {{ 'voice-clickable' if expositor.source_url }}"
+            {% if expositor.source_url %}
+            id="voice-block" tabindex="0" role="button"
+            aria-label="Open {{ expositor.name }}'s original teaching in a new tab"
+            data-source-url="{{ expositor.source_url }}"
+            data-source-label="{{ expositor.source_label }}"
+            data-source-name="{{ expositor.name }}"
+            {% endif %}>
+    <h2>A Voice from Church History &mdash; {{ expositor.name }}</h2>
+    <p class="voice-text">{{ day.expositor_insight }}</p>
+    {% if expositor.bio %}<p class="voice-bio">{{ expositor.bio }}</p>{% endif %}
+    {% if expositor.source_url %}
+      <p class="voice-source-hint">Read {{ expositor.name }}'s original writing or sermons &rarr;</p>
+    {% endif %}
+  </section>
+
+  <section class="sermon-block apply-block">
+    <h2>Living It Out</h2>
+    <p class="apply-text">{{ day.reflect }}</p>
+  </section>
+
+  <section class="sermon-block prayer-block">
+    <h2>A Prayer for Today</h2>
+    <p class="prayer-text">{{ day.prayer }}</p>
+  </section>
+
+  <div class="mark-read">
+    <button type="button" id="mark-read-btn" class="btn {{ 'btn-done' if done }}"
+            data-testament="{{ testament }}" data-day="{{ day.day_number }}"
+            aria-pressed="{{ 'true' if done else 'false' }}">
+      <span class="mark-read-label">{{ "Marked as read" if done else "Mark this day as read" }}</span>
+    </button>
+  </div>
+
+  <nav class="day-pager" aria-label="Day navigation">
+    {% if prev_day %}
+      <a class="pager-prev" href="{{ url_for('devotional.day_view', day_number=prev_day) }}">&larr; Day {{ prev_day }}</a>
+    {% else %}
+      <span></span>
+    {% endif %}
+    <a class="pager-index" href="{{ url_for('devotional.book_list') }}">All books</a>
+    {% if next_day %}
+      <a class="pager-next" href="{{ url_for('devotional.day_view', day_number=next_day) }}">Day {{ next_day }} &rarr;</a>
+    {% else %}
+      <span></span>
+    {% endif %}
+  </nav>
+</article>
+{% endblock %}

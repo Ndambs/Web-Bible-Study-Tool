@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}The Whole Bible in Daily Sermonettes{% endblock %}</title>
+  <script>
+    // Runs before CSS paints to avoid a light/dark flash on load.
+    // Deliberately defensive: a thrown error reading localStorage (some
+    // privacy modes block it entirely) must not prevent an explicit
+    // ?theme= override or the OS-level preference from still applying.
+    (function () {
+      var theme = "light";
+      var match = window.location.search.match(/[?&]theme=(dark|light)/);
+      if (match) {
+        theme = match[1];
+      } else {
+        var saved = null;
+        try { saved = localStorage.getItem("bsg-theme"); } catch (e) { /* blocked storage: ignore */ }
+        if (saved === "dark" || saved === "light") {
+          theme = saved;
+        } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          theme = "dark";
+        }
+      }
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta name="description" content="A complete, self-contained daily devotional guide through the Old and New Testaments — historical context, exposition, doctrine, and prayer for every day.">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="{{ url_for('main.home') }}">
+        <span class="brand-mark">&#9770;</span>
+        <span class="brand-text">Daily Sermonettes</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <a href="{{ url_for('devotional.book_list', testament='ot') }}"
+           class="{{ 'is-active' if testament == 'OT' }}">Old Testament</a>
+        <a href="{{ url_for('devotional.book_list', testament='nt') }}"
+           class="{{ 'is-active' if testament == 'NT' }}">New Testament</a>
+        <a href="{{ url_for('progress.dashboard') }}">My Progress</a>
+      </nav>
+
+      <form class="nav-search" action="{{ url_for('search.results') }}" method="get" role="search">
+        <label class="sr-only" for="nav-search-q">Search the guide</label>
+        <input id="nav-search-q" type="search" name="q" placeholder="Search…" value="{{ request.args.get('q', '') }}">
+      </form>
+
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">
+        <span class="theme-toggle-icon" aria-hidden="true">&#9789;</span>
+        <span class="theme-toggle-label">Dark mode</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="site-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>The Whole Bible in Daily Sermonettes &mdash; a self-contained study guide, Old Testament (183 days) and
+       New Testament (91 days), in the New Living Translation.</p>
+    <p class="footer-links">
+      <a href="{{ url_for('main.about') }}">About this guide</a>
+    </p>
+  </footer>
+
+  <div id="source-modal" class="modal-backdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="source-modal-title">
+      <h2 id="source-modal-title">Read the original?</h2>
+      <p id="source-modal-body"></p>
+      <div class="modal-actions">
+        <button type="button" id="source-modal-cancel" class="btn btn-secondary">Cancel</button>
+        <button type="button" id="source-modal-confirm" class="btn">Open in a new tab</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>

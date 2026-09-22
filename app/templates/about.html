@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}About This Guide{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="breadcrumb"><a href="{{ url_for('main.home') }}">Home</a> &rsaquo; About</p>
+  <h1>About This Guide</h1>
+</section>
+
+<section class="prose">
+  <p>This guide walks through the entire Bible in the New Living Translation across two
+     companion tracks: the Old Testament (183 days, about six months at 5&ndash;6 chapters a
+     day) and the New Testament (91 days, about three months at roughly three chapters a day).</p>
+  <p>Every day is written as a complete, stand-alone sermonette, so you can go deep without
+     needing to leave the page: the historical and cultural setting, a chapter-by-chapter
+     exposition, the central theological truth named plainly, a paraphrased insight from a
+     trusted expositor, an honest application question, and a closing prayer.</p>
+  <p>Expositor insights are paraphrased summaries of each teacher's well-documented public
+     teaching on the passage, not verbatim quotations &mdash; this respects copyright and gives
+     you an accurate on-ramp to their fuller original work if it resonates. Scripture itself is
+     referenced by chapter and verse rather than reproduced at length, so keep your own Bible
+     open alongside this guide for the text itself.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Old' if testament == 'OT' else 'New' }} Testament — Books{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="breadcrumb"><a href="{{ url_for('main.home') }}">Home</a> &rsaquo; {{ 'Old' if testament == 'OT' else 'New' }} Testament</p>
+  <h1>{{ 'Old Testament' if testament == 'OT' else 'New Testament' }}</h1>
+  <p class="page-lede">Choose a book to see its introduction and daily readings.</p>
+</section>
+
+<ul class="book-grid">
+  {% for item in books %}
+  <li class="book-tile">
+    <a href="{{ url_for('devotional.book_detail', book_slug=item.book.slug) }}">
+      <h3>{{ item.book.name }}</h3>
+      <p class="book-subtitle">{{ item.book.subtitle }}</p>
+      {% if item.day_count %}
+      <p class="book-meta">{{ item.day_count }} day{{ 's' if item.day_count != 1 }}
+        {% if item.done %}&middot; {{ item.done }} read{% endif %}</p>
+      {% endif %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

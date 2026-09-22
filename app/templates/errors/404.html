@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found{% endblock %}
+{% block content %}
+<section class="error-page">
+  <h1>Page not found</h1>
+  <p>That day or book doesn't exist in this guide. <a href="{{ url_for('main.home') }}">Return home</a>.</p>
+</section>
+{% endblock %}

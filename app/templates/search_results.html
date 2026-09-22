@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Search{% if query %}: {{ query }}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="breadcrumb"><a href="{{ url_for('main.home') }}">Home</a> &rsaquo; Search</p>
+  <h1>Search the guide</h1>
+  <form class="search-form" action="{{ url_for('search.results') }}" method="get">
+    <input type="search" name="q" value="{{ query }}" placeholder="e.g. forgiveness, Isaiah 53, prayer">
+    <button type="submit" class="btn">Search</button>
+  </form>
+</section>
+
+{% if query %}
+<p class="search-meta">{{ matches|length }} result{{ 's' if matches|length != 1 }} for &ldquo;{{ query }}&rdquo;</p>
+
+<ul class="search-results">
+  {% for d in matches %}
+  <li>
+    <a href="{{ url_for('devotional.day_view', testament=d.testament.lower(), day_number=d.day_number) }}">
+      <span class="result-tag">{{ 'OT' if d.testament == 'OT' else 'NT' }} Day {{ d.day_number }} &middot; {{ d.ref }}</span>
+      <span class="result-title">{{ d.title }}</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="empty">No matches. Try a different word or a shorter phrase.</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
